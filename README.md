@@ -26,8 +26,8 @@ By combining **automated expiration tracking**, **dynamic recipe matching**, and
 ## 💡 Core Features & Functional Architecture
 
 ### 1. 🥫 Smart Pantry & Expiration Tracking Engine
-- **Bar-code & Receipt OCR Scanning:** Instantly log food items using device cameras backed by Open Food Facts API and computer vision parsing.
-- **Dynamic Shelf-Life Estimation:** Automatically assigns estimated expiration windows based on item categories (e.g., Dairy, Fresh Produce, Frozen Goods, Pantry Staples).
+- **Manual & Receipt Entry:** Instantly log food items and their brands.
+- **Dynamic Shelf-Life Estimation:** Automatically assigns estimated expiration windows based on item categories.
 - **Proactive Expiration Alerts:** Tiered notifications (e.g., 3 days prior, 1 day prior, day of expiration) delivered via FCM (Firebase Cloud Messaging) and push alerts.
 
 ### 2. 🍲 MealCraft AI — Dynamic Recipe Engine
@@ -100,7 +100,7 @@ CREATE TABLE pantry_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     household_id UUID NOT NULL REFERENCES households(id) ON DELETE CASCADE,
     product_name VARCHAR(150) NOT NULL,
-    barcode VARCHAR(50),
+    brand VARCHAR(100),
     category VARCHAR(50) DEFAULT 'General',
     quantity NUMERIC(6,2) DEFAULT 1.00,
     unit VARCHAR(20) DEFAULT 'pcs',
@@ -164,8 +164,8 @@ Combinando il **tracciamento automatico delle scadenze**, un **motore dinamico d
 ## 💡 Funzionalità Principali e Architettura Funzionale
 
 ### 1. 🥫 Dispensa Intelligente e Tracciamento Scadenze
-- **Scansione Barcode e Scontrini (OCR):** Inserimento rapido dei prodotti tramite la fotocamera dello smartphone integrata con l'API Open Food Facts e riconoscimento testo.
-- **Stima Dinamica della Scadenza:** Assegnazione automatica della vita utile stimata in base alla categoria del prodotto (es. Latticini, Prodotti Freschi, Surgelati, Dispensa).
+- **Inserimento Manuale e Marca:** Inserimento rapido dei prodotti e della loro marca.
+- **Stima Dinamica della Scadenza:** Assegnazione automatica della vita utile stimata in base alla categoria del prodotto.
 - **Notifiche Proattive di Scadenza:** Avvisi e push notification multilivello (es. 3 giorni prima, 1 giorno prima, il giorno stesso della scadenza).
 
 ### 2. 🍲 MealCraft AI — Motore Dinamico di Ricette
@@ -217,7 +217,7 @@ CREATE TABLE pantry_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     household_id UUID NOT NULL REFERENCES households(id) ON DELETE CASCADE,
     product_name VARCHAR(150) NOT NULL,
-    barcode VARCHAR(50),
+    brand VARCHAR(100),
     category VARCHAR(50) DEFAULT 'Generico',
     quantity NUMERIC(6,2) DEFAULT 1.00,
     unit VARCHAR(20) DEFAULT 'pz',
@@ -258,10 +258,39 @@ CREATE TABLE shopping_list_items (
 ## 🚀 Roadmap e Fasi di Sviluppo
 
 - [x] **Fase 1: Architettura e Modellazione Dati** — Progettazione di sistema, schema PostgreSQL, wireframe.
-- [ ] **Fase 2: MVP Scanner Barcode e Inventario** — Integrazione scanner con Open Food Facts API e gestione CRUD dispensa.
-- [ ] **Fase 3: Sincronizzazione Real-Time e Notifiche** — Lista spesa via WebSocket e notifiche push per prodotti in scadenza.
-- [ ] **Fase 4: Integrazione Motore Ricette Anti-Spreco** — Indexing e algoritmo di ricerca per raccomandare pasti in base agli ingredienti disponibili.
-- [ ] **Fase 5: Beta Test e Release in Produzione** — Test utente, audit di sicurezza e rilascio delle app negli store.
+- [x] **Fase 2: MVP Scanner Barcode e Inventario** — Integrazione scanner con Open Food Facts API e gestione CRUD dispensa.
+- [x] **Fase 3: Interfaccia Grafica (GUI)** — UI in Python con Flet e integrazione Google AdMob.
+- [ ] **Fase 4: Sincronizzazione Real-Time e Notifiche** — Lista spesa via WebSocket e notifiche push per prodotti in scadenza.
+- [ ] **Fase 5: Integrazione Motore Ricette Anti-Spreco** — Indexing e algoritmo di ricerca per raccomandare pasti in base agli ingredienti disponibili.
+- [ ] **Fase 6: Beta Test e Release in Produzione** — Test utente, audit di sicurezza e rilascio delle app negli store.
+
+---
+
+## 🛠️ Guida all'Avvio (Sviluppo Locale)
+
+Per mantenere pulito il sistema, il progetto supporta la gestione locale delle dipendenze.
+
+### 1. Requisiti di Sistema (Una tantum)
+Assicurati di avere Python 3 e Pip installati:
+```bash
+sudo apt update && sudo apt install python3 python3-pip
+```
+
+### 2. Configurazione Dipendenze Locali
+Esegui lo script di setup per scaricare le librerie necessarie (Flet, ecc.) nella cartella `./libs`:
+```bash
+chmod +x setup_local.sh
+./setup_local.sh
+```
+
+### 3. Avvio dell'Applicazione
+Lancia l'interfaccia grafica:
+```bash
+python3 gui.py
+```
+
+### 💰 Monetizzazione
+La GUI include una simulazione di **Google AdMob Rewarded Ad**. Per sbloccare le ricette generate dall'IA, l'utente deve visualizzare un breve video annuncio, garantendo un modello di ricavo sostenibile per l'applicazione.
 
 ---
 *Created for the KitchenSync Open Project.*
